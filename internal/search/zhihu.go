@@ -1,6 +1,7 @@
 package search
 
 import (
+	"crypto/md5"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -18,7 +19,21 @@ func (j Zhihu) getType() string {
 }
 
 func (j Zhihu) Run(name string) string {
-	var req, err = http.NewRequest("GET", fmt.Sprintf("https://www.zhihu.com/api/v4/search_v3?t=general&q=%s&correction=1&offset=0&limit=20&filter_fields=&lc_idx=0&show_all_topics=0", name), nil)
+
+	apiPATH := fmt.Sprintf("/api/v4/search_v3?t=general&q=%s&correction=1&offset=0&limit=20&filter_fields=&lc_idx=0&show_all_topics=0", name)
+	secretKey := fmt.Sprintf("101_3_2.0+%s+%s", apiPATH, "\"AHCY5gT4iBKPTsBQivYRPUIbDLBctuaZZzs=|1611209467\"")
+
+	md5str := md5.Sum([]byte(secretKey))
+	sreq, serr := http.NewRequest("GET", fmt.Sprintf("https://service-denf06ck-1253616191.gz.apigw.tencentcs.com/release/secret/%x", md5str), nil)
+	sres, _ := http.DefaultClient.Do(sreq)
+	defer sres.Body.Close()
+	sbody, _ := ioutil.ReadAll(sres.Body)
+	xZse96 := "2.0_" + string(sbody)
+	if serr != nil {
+		fmt.Println("Request Faild")
+	}
+
+	var req, err = http.NewRequest("GET", fmt.Sprintf("https://www.zhihu.com%s", apiPATH), nil)
 	if err != nil {
 		fmt.Println("Request Faild")
 	}
@@ -30,7 +45,7 @@ func (j Zhihu) Run(name string) string {
 	req.Header.Set("Sec-Ch-Ua-Mobile", "?0")
 	req.Header.Set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36")
 	req.Header.Set("X-Requested-With", "fetch")
-	req.Header.Set("X-Zse-96", "2.0_aMtBb0UBo0SxQ8NqKLS0FJr0r0xfoXt088xqeQUqkLSx")
+	req.Header.Set("X-Zse-96", xZse96)
 	req.Header.Set("X-App-Za", "OS=Web")
 	req.Header.Set("Sec-Ch-Ua", "\"Chromium\";v=\"92\", \" Not A;Brand\";v=\"99\", \"Google Chrome\";v=\"92\"")
 	req.Header.Set("Accept", "*/*")

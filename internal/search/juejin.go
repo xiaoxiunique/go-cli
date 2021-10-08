@@ -76,7 +76,7 @@ func (j Juejin) Run(name string) string {
 			continue
 		}
 
-		link := fmt.Sprintf("https://juejin.cn/%s", item.ResultModel.ArticleID)
+		link := fmt.Sprintf("https://juejin.cn/post/%s", item.ResultModel.ArticleID)
 		mdSTR += fmt.Sprintf("[%s](%s) \r\n", title, link)
 	}
 
