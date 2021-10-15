@@ -21,21 +21,3 @@ func main() {
 	cmd.Execute()
 }
 
-//func main() {
-//	jsFile := "./secret.js"
-//	bytes, err := ioutil.ReadFile(jsFile)
-//	if err != nil {
-//		panic(err)
-//	}
-//
-//	vm := otto.New()
-//	_, err = vm.Run(string(bytes))
-//	if err != nil {
-//		panic(err)
-//	}
-//	enc, err := vm.Call("b", nil, "123456")
-//	if err != nil {
-//		panic(err)
-//	}
-//	fmt.Println(enc.String())
-//}
