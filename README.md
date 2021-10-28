@@ -1,11 +1,17 @@
-## go-cli 
-一个命令行工具
+### Go-cli
 
-### 快速开始
-```
-go build -o go-cli
-```
+一个用 Golang 开发的命令行工具.  可用户 Github 链接替换，单词翻译。
 
-```
-./go-cli search vim
-```
+
+
+### Feature
+
+- Github 链接替换
+- 单词翻译
+- 文章搜索
+
+
+
+### Install
+
+在 release 中选择对应平台的包安装即可
